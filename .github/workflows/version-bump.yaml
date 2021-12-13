@@ -24,7 +24,7 @@ jobs:
           node-version: 14
       - name: 'Automated Version Bump'
         id: version-bump
-        uses: 'sthuck/gh-action-bump-version@main'
+        uses: 'sthuck/gh-action-bump-version@master'
         with:
           skip-tag:  'true'
         env:
