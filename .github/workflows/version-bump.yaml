@@ -1,0 +1,38 @@
+name: 'Bump Version'
+
+on:
+  pull_request:
+    types: [edited, opened, synchronize, reopened]
+    branches:
+      - 'main'
+      
+jobs:
+  bump-version:
+    name: 'Bump Version on main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout source code'
+        uses: 'actions/checkout@v2'
+        with:
+          ref: ${{ github.head_ref }}
+      - name: 'cat package.json'
+        run: cat ./package.json
+      - name: 'Setup Node.js'
+        uses: 'actions/setup-node@v1'
+        with:
+          node-version: 14
+      - name: 'Automated Version Bump'
+        id: version-bump
+        uses: 'sthuck/gh-action-bump-version'
+        with:
+          skip-tag:  'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'cat package.json'
+        run: cat ./package.json
+      - name: 'Output Step'
+        env:
+          NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+        run: echo "new tag $NEW_TAG"
+        
